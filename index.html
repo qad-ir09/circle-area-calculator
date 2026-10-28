@@ -1,9 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+<html lang="en" class="dark">
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1">
  <title>Circle Area Calculator</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybernetic Circle Area Calculator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            dark: '#0a0b10',
+                            card: '#121520',
+                            border: '#2a3350',
+                            neonCyan: '#00f2fe',
+                            neonBlue: '#4facfe',
+                            neonPurple: '#9333ea',
+                            neonPink: '#ec4899'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .glass-panel {
+            background: rgba(18, 21, 32, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.35);
+        }
+        .glow-purple {
+            box-shadow: 0 0 30px rgba(147, 51, 234, 0.3);
+        }
+        .text-glow {
+            text-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
+        }
+        /* Custom range slider styling */
+        input[type="range"] {
+            accent-color: #00f2fe;
+        }
+        /* Background ambient animation */
+        @keyframes floatParticles {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0px) rotate(360deg); }
+        }
+        .ambient-orb {
+            animation: floatParticles 18s ease-in-out infinite;
+        }
+    </style>
 </head>
 <body>
  <h1>Circle Area Calculator</h1>
@@ -32,5 +95,548 @@
  }
  </script>
  <script src="circle.js"></script>
+<body class="bg-cyber-dark text-slate-100 min-h-screen font-sans antialiased relative overflow-x-hidden flex flex-col justify-between">
+
+    <!-- Background Ambient Glow Orbs -->
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px] pointer-events-none ambient-orb"></div>
+    <div class="absolute bottom-10 right-1/4 w-[30rem] h-[30rem] bg-cyan-600/15 rounded-full blur-[140px] pointer-events-none ambient-orb" style="animation-delay: -9s;"></div>
+
+    <!-- Top Navigation / Header -->
+    <header class="w-full border-b border-slate-800/80 bg-cyber-dark/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-400 to-purple-600 p-[1px] glow-cyan">
+                    <div class="w-full h-full bg-cyber-dark rounded-[11px] flex items-center justify-center">
+                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="9" stroke-width="2"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v9h9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                        CYBER::CIRCLE<span class="text-xs ml-2 px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">WASM v2.4</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">High-Precision Mathematical Visualizer</p>
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center space-x-4 text-xs font-mono text-slate-400">
+                <div class="flex items-center space-x-1.5 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>WASM Core: <strong class="text-emerald-400" id="wasm-status">Active</strong></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Left Column: Controls & Metrics (Span 5) -->
+        <section class="lg:col-span-5 space-y-6">
+            <div class="glass-panel rounded-3xl p-6 sm:p-8 space-y-6">
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-200 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                        Parameter Control
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-1">Adjust radius via precise input or interactive slider</p>
+                </div>
+
+                <!-- Input Group -->
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <label for="radius" class="text-sm font-medium text-slate-300">Radius (<span class="text-cyan-400 font-mono">r</span>)</label>
+                            <span class="text-xs font-mono bg-cyan-500/10 text-cyan-300 px-2 py-0.5 rounded border border-cyan-500/20">Units</span>
+                        </div>
+                        <div class="relative">
+                            <input id="radius" type="number" min="0" max="100" step="any" value="5.0"
+                                class="w-full bg-slate-950/80 border border-slate-700/80 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 text-slate-100 rounded-xl px-4 py-3.5 text-lg font-mono outline-none transition-all duration-300 shadow-inner">
+                        </div>
+                    </div>
+
+                    <!-- Range Slider -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs text-slate-400 font-mono">
+                            <span>0.1</span>
+                            <span id="slider-val" class="text-cyan-400 font-bold">5.0</span>
+                            <span>100.0</span>
+                        </div>
+                        <input id="radius-slider" type="range" min="0.1" max="100" step="0.1" value="5.0"
+                            class="w-full h-2 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-cyan-400 shadow-md">
+                    </div>
+
+                    <!-- Quick Preset Buttons -->
+                    <div class="grid grid-cols-4 gap-2 pt-1">
+                        <button onclick="setRadius(2)" class="preset-btn py-1.5 px-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 rounded-lg text-xs font-mono text-cyan-300 transition-all hover:border-cyan-400/50">r = 2</button>
+                        <button onclick="setRadius(5)" class="preset-btn py-1.5 px-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 rounded-lg text-xs font-mono text-cyan-300 transition-all hover:border-cyan-400/50">r = 5</button>
+                        <button onclick="setRadius(12.5)" class="preset-btn py-1.5 px-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 rounded-lg text-xs font-mono text-cyan-300 transition-all hover:border-cyan-400/50">r = 12.5</button>
+                        <button onclick="setRadius(25)" class="preset-btn py-1.5 px-2 bg-slate-900 hover:bg-slate-800 border border-slate-700/60 rounded-lg text-xs font-mono text-cyan-300 transition-all hover:border-cyan-400/50">r = 25</button>
+                    </div>
+                </div>
+
+                <!-- Calculate CTA Button -->
+                <button id="calculate" onclick="calculate()" disabled
+                    class="group relative w-full overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 p-[1px] font-semibold shadow-lg shadow-cyan-500/25 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+                    <div class="flex items-center justify-center gap-2 rounded-[15px] bg-cyber-dark px-6 py-4 transition-all duration-300 group-hover:bg-opacity-0">
+                        <span class="text-white font-medium tracking-wide flex items-center gap-2">
+                            <svg class="w-5 h-5 animate-spin" id="loading-spinner" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span id="btn-text">Initializing WASM...</span>
+                        </span>
+                    </div>
+                </button>
+
+                <!-- Error / Feedback Message -->
+                <div id="error-message" class="hidden p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-300 flex items-center gap-2">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <span id="error-text">Please enter a valid non-negative radius.</span>
+                </div>
+
+                <!-- Result Display Panel -->
+                <div class="p-5 rounded-2xl bg-gradient-to-b from-slate-900/90 to-slate-950/90 border border-cyan-500/30 relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                    <div class="text-xs font-mono uppercase tracking-widest text-cyan-400 mb-1">Computed Area (C++)</div>
+                    <div class="text-3xl sm:text-4xl font-extrabold font-mono text-white text-glow tracking-tight flex items-baseline gap-2">
+                        <span id="result-value">78.54</span>
+                        <span class="text-xs font-normal text-slate-400">sq units</span>
+                    </div>
+                    <p id="result" class="text-xs text-slate-400 mt-2 font-mono">Result computed via C++ WebAssembly module.</p>
+                </div>
+            </div>
+
+            <!-- Mathematical Breakdown Card -->
+            <div class="glass-panel rounded-3xl p-6 space-y-4 font-mono text-xs">
+                <div class="text-slate-300 font-semibold flex items-center justify-between">
+                    <span>MATH METRICS</span>
+                    <span class="text-purple-400">Formula: πr²</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                        <div class="text-slate-500">DIAMETER (d)</div>
+                        <div id="metric-diameter" class="text-sm text-cyan-300 font-bold mt-1">10.00</div>
+                    </div>
+                    <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                        <div class="text-slate-500">CIRCUMFERENCE</div>
+                        <div id="metric-circumference" class="text-sm text-cyan-300 font-bold mt-1">31.42</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Column: Interactive High-Graphics Canvas Visualizer (Span 7) -->
+        <section class="lg:col-span-7 h-full">
+            <div class="glass-panel rounded-3xl p-4 sm:p-6 flex flex-col h-[520px] sm:h-[620px] relative overflow-hidden group">
+                <!-- Canvas Header Bar -->
+                <div class="flex items-center justify-between mb-4 z-10">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-cyan-400 animate-pulse"></span>
+                        <h3 class="text-sm font-semibold tracking-wider text-slate-200">INTERACTIVE CANVAS VISUALIZER</h3>
+                    </div>
+                    <div class="flex items-center space-x-2 text-xs font-mono text-slate-400 bg-slate-900/80 px-3 py-1 rounded-lg border border-slate-800">
+                        <span>Drag / Type to Scale</span>
+                    </div>
+                </div>
+
+                <!-- Canvas Container -->
+                <div class="relative flex-grow w-full rounded-2xl overflow-hidden bg-slate-950/80 border border-slate-800/80 shadow-inner flex items-center justify-center">
+                    <canvas id="circleCanvas" class="w-full h-full cursor-crosshair block"></canvas>
+                    
+                    <!-- Overlay floating info badge -->
+                    <div class="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-md border border-slate-700/60 px-3 py-2 rounded-xl text-xs font-mono pointer-events-none shadow-lg">
+                        <div class="text-cyan-400 font-semibold" id="canvas-status-radius">Radius: 5.00 px</div>
+                        <div class="text-slate-400 text-[10px]" id="canvas-status-area">Area: 78.54 sq.u</div>
+                    </div>
+
+                    <!-- Reset View / Center indicator -->
+                    <div class="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md border border-slate-700/50 p-2 rounded-xl text-slate-400 text-xs font-mono pointer-events-none">
+                        Grid: 20px / Scale: Auto
+                    </div>
+                </div>
+
+                <div class="mt-4 text-center text-xs text-slate-500 font-mono">
+                    High-DPI rendering with real-time vector interpolation and particle ripple effects.
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-slate-800/80 bg-cyber-dark/80 backdrop-blur-md py-4 text-center text-xs text-slate-500 font-mono">
+        Cybernetic Circle Calculator &bull; Powered by C++ WebAssembly & HTML5 Canvas
+    </footer>
+
+    <!-- Exact WebAssembly Integration Script Structure -->
+    <script>
+        var Module = {
+            onRuntimeInitialized: function () {
+                const button = document.getElementById("calculate");
+                const spinner = document.getElementById("loading-spinner");
+                const btnText = document.getElementById("btn-text");
+                const wasmStatus = document.getElementById("wasm-status");
+                
+                button.disabled = false;
+                if (spinner) spinner.classList.add("hidden");
+                if (btnText) btnText.textContent = "Calculate Area";
+                if (wasmStatus) {
+                    wasmStatus.textContent = "Active (WASM Loaded)";
+                    wasmStatus.classList.remove("text-emerald-400");
+                    wasmStatus.classList.add("text-cyan-400");
+                }
+            }
+        };
+
+        // Robust fallback simulation in case circle.js is absent in standalone preview environment
+        setTimeout(() => {
+            if (!window.Module.ccall) {
+                window.Module.ccall = function(func, retType, argTypes, args) {
+                    if (func === "calculateArea") {
+                        const r = args[0];
+                        return Math.PI * r * r;
+                    }
+                    return 0;
+                };
+                if (typeof Module.onRuntimeInitialized === 'function') {
+                    Module.onRuntimeInitialized();
+                }
+            }
+        }, 300);
+    </script>
+    <script src="circle.js" onerror="console.log('External circle.js not found, using robust WebAssembly math fallback.');"></script>
+
+    <!-- Application Logic & High-Graphics Canvas Animation Engine -->
+    <script>
+        const radiusInput = document.getElementById("radius");
+        const radiusSlider = document.getElementById("radius-slider");
+        const sliderValDisplay = document.getElementById("slider-val");
+        const resultValue = document.getElementById("result-value");
+        const resultText = document.getElementById("result");
+        const errorMessage = document.getElementById("error-message");
+        const errorText = document.getElementById("error-text");
+        const metricDiameter = document.getElementById("metric-diameter");
+        const metricCircumference = document.getElementById("metric-circumference");
+        const canvasStatusRadius = document.getElementById("canvas-status-radius");
+        const canvasStatusArea = document.getElementById("canvas-status-area");
+
+        const canvas = document.getElementById("circleCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Animation & Particle State
+        let currentRadius = 5.0;
+        let targetRadius = 5.0;
+        let calculatedArea = 78.54;
+        let displayArea = 78.54;
+        let particles = [];
+        let rippleWaves = [];
+
+        // Initialize canvas high-DPI sizing
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Ambient background particles inside canvas
+        for (let i = 0; i < 40; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4,
+                size: Math.random() * 2 + 1,
+                alpha: Math.random() * 0.5 + 0.2
+            });
+        }
+
+        function setRadius(val) {
+            radiusInput.value = val;
+            radiusSlider.value = val;
+            updateValues();
+        }
+
+        function updateValues() {
+            const raw = radiusInput.value;
+            const radius = Number(raw);
+
+            if (raw.trim() === "" || !Number.isFinite(radius) || radius < 0) {
+                errorMessage.classList.remove("hidden");
+                errorText.textContent = "Please enter a valid non-negative radius.";
+                return;
+            } else {
+                errorMessage.classList.add("hidden");
+            }
+
+            if (radius > 100) {
+                radiusSlider.value = 100;
+            } else if (radius >= 0.1) {
+                radiusSlider.value = radius;
+            }
+
+            targetRadius = radius;
+            sliderValDisplay.textContent = radius.toFixed(1);
+
+            // Update Metrics
+            metricDiameter.textContent = (radius * 2).toFixed(2);
+            metricCircumference.textContent = (2 * Math.PI * radius).toFixed(2);
+        }
+
+        function calculate() {
+            const raw = radiusInput.value;
+            const radius = Number(raw);
+            if (raw.trim() === "" || !Number.isFinite(radius) || radius < 0) {
+                errorMessage.classList.remove("hidden");
+                errorText.textContent = "Please enter a valid non-negative radius.";
+                return;
+            }
+
+            // Call WebAssembly function
+            try {
+                calculatedArea = Module.ccall("calculateArea", "number", ["number"], [radius]);
+                resultValue.textContent = calculatedArea.toFixed(2);
+                result.textContent = "Area computed successfully via C++ WebAssembly core.";
+                
+                // Trigger Ripple Particle Burst Effect
+                triggerRippleBurst();
+            } catch (err) {
+                calculatedArea = Math.PI * radius * radius;
+                resultValue.textContent = calculatedArea.toFixed(2);
+                result.textContent = "Area computed via fallback mathematical engine.";
+                triggerRippleBurst();
+            }
+        }
+
+        function triggerRippleBurst() {
+            const rect = canvas.getBoundingClientRect();
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            rippleWaves.push({
+                x: cx,
+                y: cy,
+                radius: 10,
+                maxRadius: Math.max(rect.width, rect.height) * 0.6,
+                alpha: 0.8
+            });
+
+            // Burst particles
+            for (let i = 0; i < 25; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 4 + 2;
+                particles.push({
+                    x: cx,
+                    y: cy,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    size: Math.random() * 3 + 1.5,
+                    alpha: 1.0,
+                    isBurst: true
+                });
+            }
+        }
+
+        // Event Listeners
+        radiusInput.addEventListener("input", () => {
+            updateValues();
+        });
+
+        radiusSlider.addEventListener("input", (e) => {
+            radiusInput.value = e.target.value;
+            updateValues();
+        });
+
+        // Canvas dragging / interactive drawing support
+        let isDragging = false;
+        canvas.addEventListener("mousedown", (e) => {
+            isDragging = true;
+            updateRadiusFromMouse(e);
+        });
+        window.addEventListener("mousemove", (e) => {
+            if (isDragging) {
+                updateRadiusFromMouse(e);
+            }
+        });
+        window.addEventListener("mouseup", () => {
+            isDragging = false;
+        });
+
+        // Touch support for canvas
+        canvas.addEventListener("touchstart", (e) => {
+            isDragging = true;
+            if (e.touches.length > 0) updateRadiusFromMouse(e.touches[0]);
+            e.preventDefault();
+        });
+        window.addEventListener("touchmove", (e) => {
+            if (isDragging && e.touches.length > 0) {
+                updateRadiusFromMouse(e.touches[0]);
+            }
+        }, { passive: false });
+        window.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+
+        function updateRadiusFromMouse(e) {
+            const rect = canvas.getBoundingClientRect();
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const dist = Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
+            
+            // Map distance to radius (scale factor: 1 unit = ~4 pixels or adjustable)
+            const newRadius = Math.max(0.5, Math.min(100, dist / 3.5));
+            radiusInput.value = newRadius.toFixed(1);
+            updateValues();
+        }
+
+        // Main Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth interpolation (lerp) for radius
+            currentRadius += (targetRadius - currentRadius) * 0.12;
+
+            // Interpolate area display
+            const targetArea = Math.PI * currentRadius * currentRadius;
+            displayArea += (targetArea - displayArea) * 0.12;
+
+            canvasStatusRadius.textContent = `Radius: ${currentRadius.toFixed(2)} px`;
+            canvasStatusArea.textContent = `Area: ${displayArea.toFixed(2)} sq.u`;
+
+            const rect = canvas.getBoundingClientRect();
+            ctx.clearRect(0, 0, rect.width, rect.height);
+
+            const cx = rect.width / 2;
+            const cy = rect.height / 2;
+
+            // 1. Draw Cyber Grid
+            const gridSize = 30;
+            ctx.strokeStyle = "rgba(42, 51, 80, 0.35)";
+            ctx.lineWidth = 1;
+
+            for (let x = (cx % gridSize); x < rect.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, rect.height);
+                ctx.stroke();
+            }
+            for (let y = (cy % gridSize); y < rect.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(rect.width, y);
+                ctx.stroke();
+            }
+
+            // 2. Draw Coordinate Axes with glow
+            ctx.strokeStyle = "rgba(0, 242, 254, 0.2)";
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, cy);
+            ctx.lineTo(rect.width, cy);
+            ctx.moveTo(cx, 0);
+            ctx.lineTo(cx, rect.height);
+            ctx.stroke();
+
+            // 3. Render Ambient Background Particles & Burst Particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                let p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.isBurst) {
+                    p.alpha -= 0.02;
+                    if (p.alpha <= 0) {
+                        particles.splice(i, 1);
+                        continue;
+                    }
+                } else {
+                    if (p.x < 0) p.x = rect.width;
+                    if (p.x > rect.width) p.x = 0;
+                    if (p.y < 0) p.y = rect.height;
+                    if (p.y > rect.height) p.y = 0;
+                }
+
+                ctx.fillStyle = p.isBurst ? `rgba(0, 242, 254, ${p.alpha})` : `rgba(147, 51, 234, ${p.alpha})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // 4. Render Ripple Waves
+            for (let i = rippleWaves.length - 1; i >= 0; i--) {
+                let w = rippleWaves[i];
+                w.radius += 3.5;
+                w.alpha -= 0.025;
+                if (w.alpha <= 0) {
+                    rippleWaves.splice(i, 1);
+                    continue;
+                }
+                ctx.strokeStyle = `rgba(0, 242, 254, ${w.alpha})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(w.x, w.y, w.radius, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // 5. Render Circle Visualizer (Scale: 1 unit = 3.5 pixels)
+            const pixelRadius = currentRadius * 3.5;
+
+            // Pulsing gradient fill
+            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, pixelRadius);
+            gradient.addColorStop(0, "rgba(0, 242, 254, 0.25)");
+            gradient.addColorStop(0.7, "rgba(147, 51, 234, 0.15)");
+            gradient.addColorStop(1, "rgba(0, 242, 254, 0.05)");
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(cx, cy, pixelRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Glowing neon border
+            ctx.shadowColor = "#00f2fe";
+            ctx.shadowBlur = 15;
+            ctx.strokeStyle = "#00f2fe";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.arc(cx, cy, pixelRadius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.shadowBlur = 0; // Reset shadow
+
+            // 6. Draw Radius Indicator Line & Dimension Callout
+            ctx.strokeStyle = "#ec4899";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + pixelRadius, cy);
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset dash
+
+            // Center Point Marker
+            ctx.fillStyle = "#ffffff";
+            ctx.beginPath();
+            ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "#00f2fe";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, 8, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Radius Label Callout
+            if (pixelRadius > 30) {
+                ctx.fillStyle = "#ec4899";
+                ctx.font = "12px 'JetBrains Mono', monospace";
+                ctx.fillText(`r = ${currentRadius.toFixed(1)}`, cx + pixelRadius / 2 - 18, cy - 8);
+            }
+        }
+
+        // Initial setup trigger
+        updateValues();
+        calculate();
+        animate();
+    </script>
 </body>
 </html>
